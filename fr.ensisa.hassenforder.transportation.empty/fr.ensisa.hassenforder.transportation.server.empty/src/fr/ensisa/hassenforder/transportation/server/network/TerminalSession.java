@@ -31,7 +31,7 @@ public class TerminalSession extends Thread {
 
     private void processRequestFetch(TerminalReader reader, TerminalWriter writer) {
 
-        Pass pass = listener.kioskFetchPass(reader.getIdPass());
+        Pass pass = listener.terminalFetchPass(reader.getIdPass());
 
         if (pass == null) {
             writer.writeKO();

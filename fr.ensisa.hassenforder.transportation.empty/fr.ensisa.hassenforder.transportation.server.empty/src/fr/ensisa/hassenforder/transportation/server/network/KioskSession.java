@@ -2,9 +2,7 @@ package fr.ensisa.hassenforder.transportation.server.network;
 
 import fr.ensisa.hassenforder.transportation.kiosk.network.Protocol;
 import fr.ensisa.hassenforder.transportation.server.NetworkListener;
-import fr.ensisa.hassenforder.transportation.server.model.Pass;
-import fr.ensisa.hassenforder.transportation.server.model.Route;
-import fr.ensisa.hassenforder.transportation.server.model.Transaction;
+import fr.ensisa.hassenforder.transportation.server.model.*;
 
 import java.io.IOException;
 import java.net.Socket;
@@ -34,19 +32,33 @@ public class KioskSession extends Thread {
 
         Transaction transaction = listener.kioskCreateTransaction(new Route(reader.getPassId(), reader.getFrom(), reader.getTo(), reader.getCount()));
 
-        if(transaction==null) {
+        if (transaction == null) {
             writer.writeKO();
-        }else {
+        } else {
             writer.writeTransaction(transaction);
         }
     }
 
     private void processRequestBuyUrban(KioskReader reader, KioskWriter writer) {
 
+        Transaction transaction = listener.kioskCreateTransaction(new Urban(reader.getPassId(), reader.getCount()));
+
+        if (transaction == null) {
+            writer.writeKO();
+        } else {
+            writer.writeTransaction(transaction);
+        }
     }
 
     private void processRequestBuySubscription(KioskReader reader, KioskWriter writer) {
 
+        Transaction transaction = listener.kioskCreateTransaction(new Subscription(reader.getPassId(), reader.getMonth()));
+
+        if (transaction == null) {
+            writer.writeKO();
+        } else {
+            writer.writeTransaction(transaction);
+        }
     }
 
     private void processRequestCancel(KioskReader reader, KioskWriter writer) {
@@ -73,7 +85,13 @@ public class KioskSession extends Thread {
 
     private void processRequestPay(KioskReader reader, KioskWriter writer) {
 
+        long passId = listener.kioskPayTransaction(reader.getTransactionId(), reader.getCardId());
 
+        if (passId > 0) {
+            writer.writeOK();
+        } else {
+            writer.writeKO();
+        }
     }
 
     private void processRequestNewPass(KioskReader reader, KioskWriter writer) {

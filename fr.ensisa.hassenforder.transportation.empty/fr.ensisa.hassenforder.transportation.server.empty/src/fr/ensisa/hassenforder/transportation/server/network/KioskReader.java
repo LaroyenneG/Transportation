@@ -2,6 +2,7 @@ package fr.ensisa.hassenforder.transportation.server.network;
 
 import fr.ensisa.hassenforder.network.BasicAbstractReader;
 import fr.ensisa.hassenforder.transportation.kiosk.network.Protocol;
+import fr.ensisa.hassenforder.transportation.server.model.Subscription;
 
 import java.io.InputStream;
 
@@ -9,19 +10,21 @@ public class KioskReader extends BasicAbstractReader {
 
     private long passId;
     private long transactionId;
+    private long cardId;
     private int count;
     private String to;
     private String from;
-    private String mounth;
+    private Subscription.Month month;
 
     public KioskReader(InputStream inputStream) {
         super(inputStream);
         passId = -1;
         transactionId = -1;
+        cardId = -1;
         to = "";
         from = "";
         count = -1;
-        mounth = "";
+        month = Subscription.Month.JANUARY;
     }
 
     public void receive() {
@@ -68,7 +71,7 @@ public class KioskReader extends BasicAbstractReader {
 
     private void readPay() {
         transactionId = readLong();
-        passId = readLong();
+        cardId = readLong();
     }
 
     private void readCancel() {
@@ -89,7 +92,7 @@ public class KioskReader extends BasicAbstractReader {
 
     private void readBuySubscription() {
         passId = readLong();
-        mounth = readString();
+        month = Subscription.Month.values()[readInt()];
     }
 
     private void readFetch() {
@@ -116,7 +119,11 @@ public class KioskReader extends BasicAbstractReader {
         return from;
     }
 
-    public String getMounth() {
-        return mounth;
+    public Subscription.Month getMonth() {
+        return month;
+    }
+
+    public long getCardId() {
+        return cardId;
     }
 }
