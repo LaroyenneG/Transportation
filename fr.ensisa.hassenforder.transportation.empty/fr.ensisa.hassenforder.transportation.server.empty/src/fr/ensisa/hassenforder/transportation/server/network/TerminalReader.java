@@ -39,7 +39,7 @@ public class TerminalReader extends BasicAbstractReader {
     }
 
     private void readUseTicket() {
-        idPass = readInt();
+        idPass = readLong();
         idTicket = readString();
         count = readInt();
     }
