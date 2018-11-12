@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="ProjectModuleManager">
+    <modules>
+      <module fileurl="file://$PROJECT_DIR$/fr.ensisa.hassenforder.transportation.bank.empty/fr.ensisa.hassenforder.transportation.bank.empty.iml" filepath="$PROJECT_DIR$/fr.ensisa.hassenforder.transportation.bank.empty/fr.ensisa.hassenforder.transportation.bank.empty.iml" />
+      <module fileurl="file://$PROJECT_DIR$/fr.ensisa.hassenforder.transportation.common.empty/fr.ensisa.hassenforder.transportation.common.empty.iml" filepath="$PROJECT_DIR$/fr.ensisa.hassenforder.transportation.common.empty/fr.ensisa.hassenforder.transportation.common.empty.iml" />
+      <module fileurl="file://$PROJECT_DIR$/fr.ensisa.hassenforder.transportation.kiosk.empty/fr.ensisa.hassenforder.transportation.kiosk.empty.iml" filepath="$PROJECT_DIR$/fr.ensisa.hassenforder.transportation.kiosk.empty/fr.ensisa.hassenforder.transportation.kiosk.empty.iml" />
+      <module fileurl="file://$PROJECT_DIR$/fr.ensisa.hassenforder.transportation.server.empty/fr.ensisa.hassenforder.transportation.server.empty.iml" filepath="$PROJECT_DIR$/fr.ensisa.hassenforder.transportation.server.empty/fr.ensisa.hassenforder.transportation.server.empty.iml" />
+      <module fileurl="file://$PROJECT_DIR$/fr.ensisa.hassenforder.transportation.terminal.empty/fr.ensisa.hassenforder.transportation.terminal.empty.iml" filepath="$PROJECT_DIR$/fr.ensisa.hassenforder.transportation.terminal.empty/fr.ensisa.hassenforder.transportation.terminal.empty.iml" />
+    </modules>
+  </component>
+</project>
