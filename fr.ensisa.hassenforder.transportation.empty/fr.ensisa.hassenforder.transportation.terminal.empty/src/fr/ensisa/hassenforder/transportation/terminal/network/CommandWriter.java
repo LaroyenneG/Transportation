@@ -11,4 +11,10 @@ public class CommandWriter extends BasicAbstractWriter {
         super(outputStream);
     }
 
+    public void createFetch(long passId){
+        writeInt(Protocol.REQ_FETCH);
+        writeLong(passId);
+    }
+
+
 }

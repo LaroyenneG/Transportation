@@ -40,8 +40,18 @@ public class CommandSession implements ISession {
 	@Override
 	synchronized public Pass getPassById(long passId) {
         try {
-        	if (true != Boolean.TRUE) throw new IOException ();
-            return null;
+            CommandWriter writer = new CommandWriter(connection.getOutputStream());
+            writer.createFetch(passId);
+            writer.send();
+
+            CommandReader reader = new CommandReader(connection.getInputStream());
+            reader.receive();
+
+            if(reader.getType() == Protocol.REPLY_PASS){
+                return reader.getPass();
+            }
+
+            throw new IllegalStateException();
         } catch (IOException e) {
         	this.passId = 0;
             return null;
