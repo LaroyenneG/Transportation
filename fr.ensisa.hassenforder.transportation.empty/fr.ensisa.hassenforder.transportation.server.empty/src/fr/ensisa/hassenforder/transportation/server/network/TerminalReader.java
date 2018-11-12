@@ -7,11 +7,16 @@ import java.io.InputStream;
 
 public class TerminalReader extends BasicAbstractReader {
 
+    private String idTicket;
     private long idPass;
+    private int count;
+
 
     public TerminalReader(InputStream inputStream) {
         super(inputStream);
         idPass = -1;
+        idTicket = "";
+        count = -1;
     }
 
     public void receive() {
@@ -23,10 +28,20 @@ public class TerminalReader extends BasicAbstractReader {
                 readFetch();
                 break;
 
+            case Protocol.REQ_USE_TICKET:
+                readUseTicket();
+                break;
+
             default:
                 type = 0;
                 break;
         }
+    }
+
+    private void readUseTicket() {
+        idPass = readInt();
+        idTicket = readString();
+        count = readInt();
     }
 
     private void readFetch() {
@@ -35,5 +50,13 @@ public class TerminalReader extends BasicAbstractReader {
 
     public long getIdPass() {
         return idPass;
+    }
+
+    public String getTicketId() {
+        return idTicket;
+    }
+
+    public int getCount() {
+        return count;
     }
 }

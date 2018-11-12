@@ -63,6 +63,7 @@ public class TerminalWriter extends BasicAbstractWriter {
         writeString(urban.getTicketId());
 
         writeInt(urban.getCount());
+
         writeInt(urban.getUsed());
     }
 
@@ -76,10 +77,16 @@ public class TerminalWriter extends BasicAbstractWriter {
 
         writeString(route.getTo());
 
+        writeInt(route.getCount());
+
         writeInt(route.getUsed());
     }
 
     public void writeKO() {
+        writeInt(Protocol.REPLY_OK);
+    }
+
+    public void writeOK() {
         writeInt(Protocol.REPLY_OK);
     }
 }
