@@ -86,7 +86,5 @@ public class TerminalWriter extends BasicAbstractWriter {
         writeInt(Protocol.REPLY_OK);
     }
 
-    public void writeOK() {
-        writeInt(Protocol.REPLY_OK);
-    }
+    public void writeOK() { writeInt(Protocol.REPLY_OK); }
 }
