@@ -30,7 +30,7 @@ public class CommandSession implements ISession {
     synchronized public boolean open() {
         this.close();
         try {
-            connection = new Socket("localhost", Protocol.TERMINAL_PORT);
+            connection = new Socket("192.168.43.60", Protocol.TERMINAL_PORT);
             return true;
         } catch (IOException e) {
             return false;
@@ -48,6 +48,7 @@ public class CommandSession implements ISession {
             reader.receive();
 
             if(reader.getType() == Protocol.REPLY_PASS){
+                this.passId = passId;
                 return reader.getPass();
             }
 
@@ -61,8 +62,14 @@ public class CommandSession implements ISession {
 	@Override
 	synchronized public boolean useTicket(String ticketId, int count) {
         try {
-        	if (true != Boolean.TRUE) throw new IOException ();
-            return false;
+        	CommandWriter writer = new CommandWriter(connection.getOutputStream());
+        	writer.createUseTicket(this.passId, ticketId, count);
+        	writer.send();
+
+        	CommandReader reader = new CommandReader(connection.getInputStream());
+        	reader.receive();
+
+        	return reader.getType() == Protocol.REPLY_OK;
         } catch (IOException e) {
     		return false;
         }

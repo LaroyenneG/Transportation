@@ -16,5 +16,10 @@ public class CommandWriter extends BasicAbstractWriter {
         writeLong(passId);
     }
 
-
+    public void createUseTicket(long passId, String ticketId, int count) {
+        writeInt(Protocol.REQ_USE_TICKET);
+        writeLong(passId);
+        writeString(ticketId);
+        writeInt(count);
+    }
 }

@@ -13,7 +13,6 @@ public class CommandReader extends BasicAbstractReader {
 
     public CommandReader(InputStream inputStream) {
         super(inputStream);
-
     }
 
     public void receive() {
@@ -21,11 +20,18 @@ public class CommandReader extends BasicAbstractReader {
         switch (type) {
             case Protocol.REPLY_PASS:
                 readPass();
+                break;
+
+            case Protocol.REPLY_OK:
+                break;
+
+            case Protocol.REPLY_KO:
+                break;
         }
     }
 
     public Pass getPass() {
-        return null;
+        return this.pass;
     }
 
     private void readPass(){
@@ -33,7 +39,6 @@ public class CommandReader extends BasicAbstractReader {
         String description = readString();
 
         pass = new Pass(passId, description);
-
         long nbTicket = readLong();
 
         for(int i = 0; i < nbTicket; i++){
@@ -43,28 +48,42 @@ public class CommandReader extends BasicAbstractReader {
 
     private Ticket readTicket() {
         Ticket.Type type = Ticket.Type.values()[readInt()];
-        String id = readString();
-
-        String from, to;
-        int count, used;
 
         switch (type){
             case ROUTE:
-                from = readString();
-                to = readString();
-                count = readInt();
-                used = readInt();
-                return new Ticket(id, from, to, count, used);
+                return readRoute();
             case URBAN:
-                count = readInt();
-                used = readInt();
-                return new Ticket(id, count, used);
+                return readUrban();
             case SUBSCRIPTION:
-                Ticket.Month month = Ticket.Month.values()[readInt()];
-                used = readInt();
-                return new Ticket(id, month, used);
+                return readSubscription();
         }
 
         throw new IllegalStateException();
+    }
+
+    private Ticket readRoute(){
+        String id = readString();
+        String from = readString();
+        String to = readString();
+        int count = readInt();
+        int used = readInt();
+
+        return new Ticket(id, from, to, count, used);
+    }
+
+    private Ticket readUrban(){
+        String id = readString();
+        int count = readInt();
+        int used = readInt();
+
+        return new Ticket(id, count, used);
+    }
+
+    private Ticket readSubscription(){
+        String id = readString();
+        Ticket.Month month = Ticket.Month.values()[readInt()];
+        int used = readInt();
+
+        return new Ticket(id, month, used);
     }
 }

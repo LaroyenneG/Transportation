@@ -8,5 +8,7 @@ public class Protocol {
     public static final int  REQ_USE_TICKET = 1002;
 
     public static final int REPLY_PASS = 2000;
+    public static final int REPLY_OK = 2001;
+    public static final int REPLY_KO = 2002;
 
 }
