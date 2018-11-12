@@ -31,14 +31,23 @@ public class TerminalSession extends Thread {
 
     private void processRequestFetch(TerminalReader reader, TerminalWriter writer) {
 
-        long id = reader.getIdPass();
-
-        Pass pass = listener.kioskFetchPass(id);
+        Pass pass = listener.kioskFetchPass(reader.getIdPass());
 
         if (pass == null) {
             writer.writeKO();
         } else {
             writer.writePass(pass);
+        }
+    }
+
+    private void processRequestUse(TerminalReader reader, TerminalWriter writer) {
+
+        boolean r = listener.terminalUseTicket(reader.getIdPass(), reader.getTicketId(), reader.getCount());
+
+        if(r) {
+            writer.writeOK();
+        }else {
+            writer.writeKO();
         }
     }
 
@@ -54,6 +63,10 @@ public class TerminalSession extends Thread {
 
                 case Protocol.REQ_FETCH:
                     processRequestFetch(reader, writer);
+                    break;
+
+                case Protocol.REQ_USE_TICKET:
+                    processRequestUse(reader, writer);
                     break;
             }
             writer.send();
