@@ -29,7 +29,7 @@ public class KioskSession implements ISession {
     synchronized public boolean open() {
         this.close();
         try {
-            connection = new Socket("localhost", Protocol.KIOSK_PORT);
+            connection = new Socket("192.168.43.60", Protocol.KIOSK_PORT);
             return true;
         } catch (IOException e) {
             return false;
@@ -39,8 +39,18 @@ public class KioskSession implements ISession {
 	@Override
 	public long createPass() {
         try {
-        	if (true != Boolean.TRUE) throw new IOException ();
-            return -1L;
+            KioskWriter writer = new KioskWriter(connection.getOutputStream());
+            writer.createNewPass();
+            writer.send();
+
+            KioskReader reader = new KioskReader(connection.getInputStream());
+            reader.receive();
+
+            if(reader.getType() == Protocol.REPLY_PASS){
+                return reader.getPass().getPassId();
+            }
+
+            throw new IllegalStateException();
         } catch (IOException e) {
             return -1L;
         }
@@ -49,8 +59,18 @@ public class KioskSession implements ISession {
 	@Override
 	public Pass getPassById(long passId) {
         try {
-        	if (true != Boolean.TRUE) throw new IOException ();
-            return null;
+            KioskWriter writer = new KioskWriter(connection.getOutputStream());
+            writer.createFetch(passId);
+            writer.send();
+
+            KioskReader reader = new KioskReader(connection.getInputStream());
+            reader.receive();
+
+            if(reader.getType() == Protocol.REPLY_TRANSACTION){
+                return reader.getPass();
+            }
+
+            throw new IllegalStateException();
         } catch (IOException e) {
             return null;
         }
@@ -59,8 +79,18 @@ public class KioskSession implements ISession {
 	@Override
 	public Transaction buyRoute(long passId, String from, String to, int count) {
         try {
-        	if (true != Boolean.TRUE) throw new IOException ();
-            return null;
+            KioskWriter writer = new KioskWriter(connection.getOutputStream());
+            writer.createBuyRoute(passId, from, to, count);
+            writer.send();
+
+            KioskReader reader = new KioskReader(connection.getInputStream());
+            reader.receive();
+
+            if(reader.getType() == Protocol.REPLY_TRANSACTION){
+                return reader.getTransaction();
+            }
+
+            throw new IllegalStateException();
         } catch (IOException e) {
             return null;
         }
@@ -69,8 +99,18 @@ public class KioskSession implements ISession {
 	@Override
 	public Transaction buyUrban(long passId, int count) {
         try {
-        	if (true != Boolean.TRUE) throw new IOException ();
-            return null;
+            KioskWriter writer = new KioskWriter(connection.getOutputStream());
+            writer.createBuyUrban(passId, count);
+            writer.send();
+
+            KioskReader reader = new KioskReader(connection.getInputStream());
+            reader.receive();
+
+            if(reader.getType() == Protocol.REPLY_TRANSACTION){
+                return reader.getTransaction();
+            }
+
+            throw new IllegalStateException();
         } catch (IOException e) {
             return null;
         }
@@ -79,8 +119,18 @@ public class KioskSession implements ISession {
 	@Override
 	public Transaction buySubscription(long passId, int month) {
         try {
-        	if (true != Boolean.TRUE) throw new IOException ();
-            return null;
+            KioskWriter writer = new KioskWriter(connection.getOutputStream());
+            writer.createBuySubscription(passId, month);
+            writer.send();
+
+            KioskReader reader = new KioskReader(connection.getInputStream());
+            reader.receive();
+
+            if(reader.getType() == Protocol.REPLY_TRANSACTION){
+                return reader.getTransaction();
+            }
+
+            throw new IllegalStateException();
         } catch (IOException e) {
             return null;
         }
@@ -89,8 +139,15 @@ public class KioskSession implements ISession {
 	@Override
 	public boolean cancelTransaction(long id) {
         try {
-        	if (true != Boolean.TRUE) throw new IOException ();
-    		return false;
+            KioskWriter writer = new KioskWriter(connection.getOutputStream());
+            writer.createCancel(id);
+            writer.send();
+
+            KioskReader reader = new KioskReader(connection.getInputStream());
+            reader.receive();
+
+            return reader.getType() == Protocol.REPLY_OK;
+
         } catch (IOException e) {
     		return false;
         }
@@ -99,8 +156,18 @@ public class KioskSession implements ISession {
 	@Override
 	public long payTransaction(long id, long cardId) {
         try {
-        	if (true != Boolean.TRUE) throw new IOException ();
-    		return -1;
+            KioskWriter writer = new KioskWriter(connection.getOutputStream());
+            writer.createPay(id, cardId);
+            writer.send();
+
+            KioskReader reader = new KioskReader(connection.getInputStream());
+            reader.receive();
+
+            if(reader.getType() == Protocol.REPLY_TRANSACTION){
+                return reader.getTransaction().getId();
+            }
+
+            throw new IllegalStateException();
         } catch (IOException e) {
     		return -1;
         }

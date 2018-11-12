@@ -19,5 +19,5 @@ public interface Protocol {
     public static final int REPLY_KO = 2001;
 
     public static final int REPLY_PASS = 2002;
-    public static final int REPLY_PRICE = 2003;
+    public static final int REPLY_TRANSACTION = 2003;
 }
