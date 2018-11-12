@@ -5,7 +5,7 @@ public interface Protocol {
     public static final int KIOSK_PORT = 7777;
 
     public static final int REQ_FETCH = 1000;
-    public static final int REQ_NEW_CARD = 1001;
+    public static final int REQ_NEW_PASS = 1001;
 
     public static final int REQ_BUY_ROUTE = 1002;
     public static final int REQ_BUY_URBAN = 1003;
