@@ -18,7 +18,7 @@ public class BankReader extends BasicAbstractReader {
         switch (type) {
 
             case Protocol.REQ_DEBIT:
-                readCard();
+                readDebit();
                 break;
 
             default:
@@ -27,7 +27,7 @@ public class BankReader extends BasicAbstractReader {
         }
     }
 
-    private void readCard() {
+    private void readDebit() {
         cardId = readLong();
     }
 }

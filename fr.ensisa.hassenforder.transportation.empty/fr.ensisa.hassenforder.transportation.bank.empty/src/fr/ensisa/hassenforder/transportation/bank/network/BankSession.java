@@ -43,7 +43,7 @@ public class BankSession extends Thread {
                 case 0:
                     return false; // socket closed
 
-                case Protocol.BANK_PORT:
+                case Protocol.REQ_DEBIT:
                     processRequestWithdraw(reader, writer);
                     break;
             }
