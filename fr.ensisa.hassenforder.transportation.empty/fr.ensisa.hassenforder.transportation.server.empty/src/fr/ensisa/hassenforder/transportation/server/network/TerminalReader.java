@@ -23,8 +23,7 @@ public class TerminalReader extends BasicAbstractReader {
         type = readInt();
         switch (type) {
 
-            case Protocol
-                    .REQ_FETCH:
+            case Protocol.REQ_FETCH:
                 readFetch();
                 break;
 
