@@ -42,6 +42,29 @@ public class CommandReader extends BasicAbstractReader {
     }
 
     private Ticket readTicket() {
-        return null; // TODO
+        Ticket.Type type = Ticket.Type.values()[readInt()];
+        String id = readString();
+
+        String from, to;
+        int count, used;
+
+        switch (type){
+            case ROUTE:
+                from = readString();
+                to = readString();
+                count = readInt();
+                used = readInt();
+                return new Ticket(id, from, to, count, used);
+            case URBAN:
+                count = readInt();
+                used = readInt();
+                return new Ticket(id, count, used);
+            case SUBSCRIPTION:
+                Ticket.Month month = Ticket.Month.values()[readInt()];
+                used = readInt();
+                return new Ticket(id, month, used);
+        }
+
+        throw new IllegalStateException();
     }
 }
