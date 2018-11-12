@@ -1,10 +1,10 @@
 package fr.ensisa.hassenforder.transportation.kiosk.network;
 
-import java.io.IOException;
-import java.net.Socket;
-
 import fr.ensisa.hassenforder.transportation.kiosk.model.Pass;
 import fr.ensisa.hassenforder.transportation.kiosk.model.Transaction;
+
+import java.io.IOException;
+import java.net.Socket;
 
 public class KioskSession implements ISession {
 
@@ -29,15 +29,15 @@ public class KioskSession implements ISession {
     synchronized public boolean open() {
         this.close();
         try {
-            connection = new Socket("192.168.43.60", Protocol.KIOSK_PORT);
+            connection = new Socket("localhost", Protocol.KIOSK_PORT);
             return true;
         } catch (IOException e) {
             return false;
         }
     }
 
-	@Override
-	public long createPass() {
+    @Override
+    public long createPass() {
         try {
             KioskWriter writer = new KioskWriter(connection.getOutputStream());
             writer.createNewPass();
@@ -46,7 +46,7 @@ public class KioskSession implements ISession {
             KioskReader reader = new KioskReader(connection.getInputStream());
             reader.receive();
 
-            if(reader.getType() == Protocol.REPLY_PASS){
+            if (reader.getType() == Protocol.REPLY_PASS) {
                 return reader.getPass().getPassId();
             }
 
@@ -54,10 +54,10 @@ public class KioskSession implements ISession {
         } catch (IOException e) {
             return -1L;
         }
-	}
+    }
 
-	@Override
-	public Pass getPassById(long passId) {
+    @Override
+    public Pass getPassById(long passId) {
         try {
             KioskWriter writer = new KioskWriter(connection.getOutputStream());
             writer.createFetch(passId);
@@ -66,7 +66,7 @@ public class KioskSession implements ISession {
             KioskReader reader = new KioskReader(connection.getInputStream());
             reader.receive();
 
-            if(reader.getType() == Protocol.REPLY_TRANSACTION){
+            if (reader.getType() == Protocol.REPLY_PASS) {
                 return reader.getPass();
             }
 
@@ -74,10 +74,10 @@ public class KioskSession implements ISession {
         } catch (IOException e) {
             return null;
         }
-	}
+    }
 
-	@Override
-	public Transaction buyRoute(long passId, String from, String to, int count) {
+    @Override
+    public Transaction buyRoute(long passId, String from, String to, int count) {
         try {
             KioskWriter writer = new KioskWriter(connection.getOutputStream());
             writer.createBuyRoute(passId, from, to, count);
@@ -86,7 +86,7 @@ public class KioskSession implements ISession {
             KioskReader reader = new KioskReader(connection.getInputStream());
             reader.receive();
 
-            if(reader.getType() == Protocol.REPLY_TRANSACTION){
+            if (reader.getType() == Protocol.REPLY_TRANSACTION) {
                 return reader.getTransaction();
             }
 
@@ -94,10 +94,10 @@ public class KioskSession implements ISession {
         } catch (IOException e) {
             return null;
         }
-	}
+    }
 
-	@Override
-	public Transaction buyUrban(long passId, int count) {
+    @Override
+    public Transaction buyUrban(long passId, int count) {
         try {
             KioskWriter writer = new KioskWriter(connection.getOutputStream());
             writer.createBuyUrban(passId, count);
@@ -106,7 +106,7 @@ public class KioskSession implements ISession {
             KioskReader reader = new KioskReader(connection.getInputStream());
             reader.receive();
 
-            if(reader.getType() == Protocol.REPLY_TRANSACTION){
+            if (reader.getType() == Protocol.REPLY_TRANSACTION) {
                 return reader.getTransaction();
             }
 
@@ -114,10 +114,10 @@ public class KioskSession implements ISession {
         } catch (IOException e) {
             return null;
         }
-	}
+    }
 
-	@Override
-	public Transaction buySubscription(long passId, int month) {
+    @Override
+    public Transaction buySubscription(long passId, int month) {
         try {
             KioskWriter writer = new KioskWriter(connection.getOutputStream());
             writer.createBuySubscription(passId, month);
@@ -126,7 +126,7 @@ public class KioskSession implements ISession {
             KioskReader reader = new KioskReader(connection.getInputStream());
             reader.receive();
 
-            if(reader.getType() == Protocol.REPLY_TRANSACTION){
+            if (reader.getType() == Protocol.REPLY_TRANSACTION) {
                 return reader.getTransaction();
             }
 
@@ -134,10 +134,10 @@ public class KioskSession implements ISession {
         } catch (IOException e) {
             return null;
         }
-	}
+    }
 
-	@Override
-	public boolean cancelTransaction(long id) {
+    @Override
+    public boolean cancelTransaction(long id) {
         try {
             KioskWriter writer = new KioskWriter(connection.getOutputStream());
             writer.createCancel(id);
@@ -149,12 +149,12 @@ public class KioskSession implements ISession {
             return reader.getType() == Protocol.REPLY_OK;
 
         } catch (IOException e) {
-    		return false;
+            return false;
         }
-	}
+    }
 
-	@Override
-	public long payTransaction(long id, long cardId) {
+    @Override
+    public long payTransaction(long id, long cardId) {
         try {
             KioskWriter writer = new KioskWriter(connection.getOutputStream());
             writer.createPay(id, cardId);
@@ -163,14 +163,18 @@ public class KioskSession implements ISession {
             KioskReader reader = new KioskReader(connection.getInputStream());
             reader.receive();
 
-            if(reader.getType() == Protocol.REPLY_TRANSACTION){
-                return reader.getTransaction().getId();
+            if (reader.getType() == Protocol.REPLY_OK) {
+                return 0;
+            }
+
+            if (reader.getType() == Protocol.REPLY_KO) {
+                return -1;
             }
 
             throw new IllegalStateException();
         } catch (IOException e) {
-    		return -1;
+            return -1;
         }
-	}
+    }
 
- }
+}

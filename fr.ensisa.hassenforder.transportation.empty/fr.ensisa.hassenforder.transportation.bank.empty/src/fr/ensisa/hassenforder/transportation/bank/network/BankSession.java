@@ -31,9 +31,9 @@ public class BankSession extends Thread {
         boolean r = listener.withdrawByCardId(reader.getCardId(), reader.getAmount());
 
         if (r) {
-            writer.writeKO();
-        } else {
             writer.writeOK();
+        } else {
+            writer.writeKO();
         }
     }
 
@@ -41,7 +41,9 @@ public class BankSession extends Thread {
         try {
             BankWriter writer = new BankWriter(connection.getOutputStream());
             BankReader reader = new BankReader(connection.getInputStream());
+
             reader.receive();
+
             switch (reader.getType()) {
 
                 case 0:

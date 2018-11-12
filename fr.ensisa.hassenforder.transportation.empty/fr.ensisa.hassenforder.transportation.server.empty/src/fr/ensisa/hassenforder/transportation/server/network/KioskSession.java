@@ -30,35 +30,30 @@ public class KioskSession extends Thread {
 
     private void processRequestBuyRoute(KioskReader reader, KioskWriter writer) {
 
-        Transaction transaction = listener.kioskCreateTransaction(new Route(reader.getPassId(), reader.getFrom(), reader.getTo(), reader.getCount()));
+        Ticket ticket = new Route(reader.getPassId(), reader.getFrom(), reader.getTo(), reader.getCount());
 
-        if (transaction == null) {
-            writer.writeKO();
-        } else {
-            writer.writeTransaction(transaction);
-        }
+        Transaction transaction = listener.kioskCreateTransaction(ticket);
+
+        writer.writeTransaction(transaction);
     }
 
     private void processRequestBuyUrban(KioskReader reader, KioskWriter writer) {
 
-        Transaction transaction = listener.kioskCreateTransaction(new Urban(reader.getPassId(), reader.getCount()));
 
-        if (transaction == null) {
-            writer.writeKO();
-        } else {
-            writer.writeTransaction(transaction);
-        }
+        Ticket ticket = new Urban(reader.getPassId(), reader.getCount());
+
+        Transaction transaction = listener.kioskCreateTransaction(ticket);
+
+        writer.writeTransaction(transaction);
     }
 
     private void processRequestBuySubscription(KioskReader reader, KioskWriter writer) {
 
-        Transaction transaction = listener.kioskCreateTransaction(new Subscription(reader.getPassId(), reader.getMonth()));
+        Ticket ticket = new Subscription(reader.getPassId(), reader.getMonth());
 
-        if (transaction == null) {
-            writer.writeKO();
-        } else {
-            writer.writeTransaction(transaction);
-        }
+        Transaction transaction = listener.kioskCreateTransaction(ticket);
+
+        writer.writeTransaction(transaction);
     }
 
     private void processRequestCancel(KioskReader reader, KioskWriter writer) {
@@ -87,10 +82,10 @@ public class KioskSession extends Thread {
 
         long passId = listener.kioskPayTransaction(reader.getTransactionId(), reader.getCardId());
 
-        if (passId > 0) {
-            writer.writeOK();
-        } else {
+        if (passId < 0) {
             writer.writeKO();
+        } else {
+            writer.writeOK();
         }
     }
 

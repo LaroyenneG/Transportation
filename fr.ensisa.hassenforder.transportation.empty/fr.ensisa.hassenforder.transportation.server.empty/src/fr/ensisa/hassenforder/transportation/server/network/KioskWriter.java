@@ -9,9 +9,9 @@ import java.util.List;
 
 public class KioskWriter extends BasicAbstractWriter {
 
-	public KioskWriter(OutputStream outputStream) {
-		super (outputStream);
-	}
+    public KioskWriter(OutputStream outputStream) {
+        super(outputStream);
+    }
 
     public void writePass(Pass pass) {
 
@@ -83,13 +83,14 @@ public class KioskWriter extends BasicAbstractWriter {
 
     public void writeTransaction(Transaction transaction) {
 
-	    writeInt(Protocol.REPLY_TRANSACTION);
-	    writeLong(transaction.getId());
-	    writeInt(transaction.getAmount());
+        writeInt(Protocol.REPLY_TRANSACTION);
+
+        writeLong(transaction.getId());
+        writeInt(transaction.getAmount());
     }
 
     public void writeOK() {
-	    writeInt(Protocol.REPLY_OK);
+        writeInt(Protocol.REPLY_OK);
     }
 
     public void writeKO() {

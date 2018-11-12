@@ -1,15 +1,16 @@
 package fr.ensisa.hassenforder.transportation.server.network;
 
+import fr.ensisa.hassenforder.transportation.bank.network.Protocol;
+
 import java.io.IOException;
 import java.net.Socket;
-
-import fr.ensisa.hassenforder.transportation.bank.network.Protocol;
 
 public class BankSession implements ISession {
 
     private Socket connection;
-    
+
     public BankSession() {
+        open(); // !!!!!
     }
 
     @Override
@@ -35,20 +36,29 @@ public class BankSession implements ISession {
         }
     }
 
-	@Override
-	synchronized public boolean bankWithdraw (long cardId, int amount) {
+    @Override
+    synchronized public boolean bankWithdraw(long cardId, int amount) {
         try {
-        	if (true != Boolean.TRUE) throw new IOException ();
-            return false;
-        } catch (IOException e) {
-    		return false;
-        }
-	}
 
-	@Override
-	protected void finalize() throws Throwable {
-		close();
-		super.finalize();
-	}
+            BankWriter writer = new BankWriter(connection.getOutputStream());
+            BankReader reader = new BankReader(connection.getInputStream());
+
+            writer.createBuy(cardId, amount);
+            writer.send();
+
+            reader.receive();
+
+            return reader.getType() == Protocol.REPLY_OK;
+
+        } catch (IOException e) {
+            return false;
+        }
+    }
+
+    @Override
+    protected void finalize() throws Throwable {
+        close();
+        super.finalize();
+    }
 
 }
