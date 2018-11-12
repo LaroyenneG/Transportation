@@ -1,9 +1,8 @@
 package fr.ensisa.hassenforder.transportation.server.network;
 
-import java.io.InputStream;
 import fr.ensisa.hassenforder.network.BasicAbstractReader;
 
-import fr.ensisa.hassenforder.transportation.bank.network.Protocol;
+import java.io.InputStream;
 
 public class BankReader extends BasicAbstractReader {
 
@@ -14,6 +13,11 @@ public class BankReader extends BasicAbstractReader {
     public void receive() {
         type = readInt();
         switch (type) {
+
+
+            default:
+                type = 0;
+                break;
         }
     }
 
