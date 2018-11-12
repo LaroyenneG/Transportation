@@ -1,21 +1,33 @@
 package fr.ensisa.hassenforder.transportation.bank.network;
 
-import java.io.InputStream;
-
 import fr.ensisa.hassenforder.network.BasicAbstractReader;
-import fr.ensisa.hassenforder.transportation.bank.network.Protocol;
+
+import java.io.InputStream;
 
 public class BankReader extends BasicAbstractReader {
 
-	public BankReader(InputStream inputStream) {
-		super (inputStream);
-	}
+    private long cardId;
 
-	public void receive() {
-		type = readInt ();
-		switch (type) {
-		case 0 : break;
-		}
-	}
+    public BankReader(InputStream inputStream) {
+        super(inputStream);
+        cardId = -1;
+    }
 
+    public void receive() {
+        type = readInt();
+        switch (type) {
+
+            case Protocol.REQ_DEBIT:
+                readCard();
+                break;
+
+            default:
+                type = 0;
+                break;
+        }
+    }
+
+    private void readCard() {
+        cardId = readLong();
+    }
 }
