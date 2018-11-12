@@ -28,9 +28,13 @@ public class BankSession extends Thread {
 
     private void processRequestWithdraw(BankReader reader, BankWriter writer) {
 
-        /**
-         * Faire le retrait et editer le writer
-         */
+        boolean r = listener.withdrawByCardId(reader.getCardId(), reader.getAmount());
+
+        if (r) {
+            writer.writeKO();
+        } else {
+            writer.writeOK();
+        }
     }
 
     public boolean operate() {

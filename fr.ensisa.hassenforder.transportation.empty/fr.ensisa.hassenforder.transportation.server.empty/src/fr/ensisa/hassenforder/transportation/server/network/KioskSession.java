@@ -2,6 +2,9 @@ package fr.ensisa.hassenforder.transportation.server.network;
 
 import fr.ensisa.hassenforder.transportation.kiosk.network.Protocol;
 import fr.ensisa.hassenforder.transportation.server.NetworkListener;
+import fr.ensisa.hassenforder.transportation.server.model.Pass;
+import fr.ensisa.hassenforder.transportation.server.model.Route;
+import fr.ensisa.hassenforder.transportation.server.model.Transaction;
 
 import java.io.IOException;
 import java.net.Socket;
@@ -29,6 +32,13 @@ public class KioskSession extends Thread {
 
     private void processRequestBuyRoute(KioskReader reader, KioskWriter writer) {
 
+        Transaction transaction = listener.kioskCreateTransaction(new Route(reader.getPassId(), reader.getFrom(), reader.getTo(), reader.getCount()));
+
+        if(transaction==null) {
+            writer.writeKO();
+        }else {
+            writer.writeTransaction(transaction);
+        }
     }
 
     private void processRequestBuyUrban(KioskReader reader, KioskWriter writer) {
@@ -41,20 +51,44 @@ public class KioskSession extends Thread {
 
     private void processRequestCancel(KioskReader reader, KioskWriter writer) {
 
+        boolean r = listener.kioskCancelTransaction(reader.getTransactionId());
+
+        if (r) {
+            writer.writeOK();
+        } else {
+            writer.writeKO();
+        }
     }
 
     private void processRequestFetch(KioskReader reader, KioskWriter writer) {
 
+        Pass pass = listener.kioskFetchPass(reader.getPassId());
+
+        if (pass == null) {
+            writer.writeKO();
+        } else {
+            writer.writePass(pass);
+        }
     }
 
     private void processRequestPay(KioskReader reader, KioskWriter writer) {
 
+
     }
 
     private void processRequestNewPass(KioskReader reader, KioskWriter writer) {
+
+        Pass pass = listener.kioskFetchPass(listener.kioskCreatePass());
+
+        if (pass == null) {
+            writer.writeKO();
+        } else {
+            writer.writePass(pass);
+        }
     }
 
     public boolean operate() {
+
         try {
             KioskWriter writer = new KioskWriter(connection.getOutputStream());
             KioskReader reader = new KioskReader(connection.getInputStream());

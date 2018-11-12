@@ -6,11 +6,13 @@ import java.io.InputStream;
 
 public class BankReader extends BasicAbstractReader {
 
+    private int amount;
     private long cardId;
 
     public BankReader(InputStream inputStream) {
         super(inputStream);
         cardId = -1;
+        amount = -1;
     }
 
     public void receive() {
@@ -29,5 +31,14 @@ public class BankReader extends BasicAbstractReader {
 
     private void readDebit() {
         cardId = readLong();
+        amount = readInt();
+    }
+
+    public long getCardId() {
+        return cardId;
+    }
+
+    public int getAmount() {
+        return amount;
     }
 }
