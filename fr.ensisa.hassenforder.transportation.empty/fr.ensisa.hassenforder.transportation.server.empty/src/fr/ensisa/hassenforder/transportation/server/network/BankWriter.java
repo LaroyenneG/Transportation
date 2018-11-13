@@ -1,9 +1,9 @@
 package fr.ensisa.hassenforder.transportation.server.network;
 
-import java.io.OutputStream;
-
 import fr.ensisa.hassenforder.network.BasicAbstractWriter;
 import fr.ensisa.hassenforder.transportation.bank.network.Protocol;
+
+import java.io.OutputStream;
 
 public class BankWriter extends BasicAbstractWriter {
 

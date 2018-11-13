@@ -1,17 +1,17 @@
 package fr.ensisa.hassenforder.transportation.terminal.network;
 
+import fr.ensisa.hassenforder.transportation.terminal.model.Pass;
+
 import java.io.IOException;
 import java.net.Socket;
-
-import fr.ensisa.hassenforder.transportation.terminal.model.Pass;
 
 public class CommandSession implements ISession {
 
     private Socket connection;
     private long passId;
-    
+
     public CommandSession() {
-    	this.passId = 0;
+        this.passId = 0;
     }
 
     @Override
@@ -37,8 +37,8 @@ public class CommandSession implements ISession {
         }
     }
 
-	@Override
-	synchronized public Pass getPassById(long passId) {
+    @Override
+    synchronized public Pass getPassById(long passId) {
         try {
             CommandWriter writer = new CommandWriter(connection.getOutputStream());
             writer.createFetch(passId);
@@ -47,32 +47,32 @@ public class CommandSession implements ISession {
             CommandReader reader = new CommandReader(connection.getInputStream());
             reader.receive();
 
-            if(reader.getType() == Protocol.REPLY_PASS){
+            if (reader.getType() == Protocol.REPLY_PASS) {
                 this.passId = passId;
                 return reader.getPass();
             }
 
             throw new IllegalStateException();
         } catch (IOException e) {
-        	this.passId = 0;
+            this.passId = 0;
             return null;
         }
-	}
+    }
 
-	@Override
-	synchronized public boolean useTicket(String ticketId, int count) {
+    @Override
+    synchronized public boolean useTicket(String ticketId, int count) {
         try {
-        	CommandWriter writer = new CommandWriter(connection.getOutputStream());
-        	writer.createUseTicket(this.passId, ticketId, count);
-        	writer.send();
+            CommandWriter writer = new CommandWriter(connection.getOutputStream());
+            writer.createUseTicket(this.passId, ticketId, count);
+            writer.send();
 
-        	CommandReader reader = new CommandReader(connection.getInputStream());
-        	reader.receive();
+            CommandReader reader = new CommandReader(connection.getInputStream());
+            reader.receive();
 
-        	return reader.getType() == Protocol.REPLY_OK;
+            return reader.getType() == Protocol.REPLY_OK;
         } catch (IOException e) {
-    		return false;
+            return false;
         }
-	}
+    }
 
 }

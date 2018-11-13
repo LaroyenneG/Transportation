@@ -33,6 +33,7 @@ public class KioskSession extends Thread {
         Ticket ticket = new Route(reader.getPassId(), reader.getFrom(), reader.getTo(), reader.getCount());
 
         listener.kioskAddTicket(ticket);
+
         Transaction transaction = listener.kioskCreateTransaction(ticket);
 
         writer.writeTransaction(transaction);
@@ -44,6 +45,7 @@ public class KioskSession extends Thread {
         Ticket ticket = new Urban(reader.getPassId(), reader.getCount());
 
         listener.kioskAddTicket(ticket);
+
         Transaction transaction = listener.kioskCreateTransaction(ticket);
 
         writer.writeTransaction(transaction);
@@ -54,6 +56,7 @@ public class KioskSession extends Thread {
         Ticket ticket = new Subscription(reader.getPassId(), reader.getMonth());
 
         listener.kioskAddTicket(ticket);
+
         Transaction transaction = listener.kioskCreateTransaction(ticket);
 
         writer.writeTransaction(transaction);

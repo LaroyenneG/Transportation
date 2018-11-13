@@ -1,11 +1,10 @@
 package fr.ensisa.hassenforder.transportation.terminal.network;
 
-import java.io.InputStream;
 import fr.ensisa.hassenforder.network.BasicAbstractReader;
-
-import fr.ensisa.hassenforder.transportation.terminal.network.Protocol;
 import fr.ensisa.hassenforder.transportation.terminal.model.Pass;
 import fr.ensisa.hassenforder.transportation.terminal.model.Ticket;
+
+import java.io.InputStream;
 
 public class CommandReader extends BasicAbstractReader {
 
@@ -16,6 +15,7 @@ public class CommandReader extends BasicAbstractReader {
     }
 
     public void receive() {
+
         type = readInt();
         switch (type) {
             case Protocol.REPLY_PASS:
@@ -27,6 +27,10 @@ public class CommandReader extends BasicAbstractReader {
 
             case Protocol.REPLY_KO:
                 break;
+
+            default:
+                type = 0;
+                break;
         }
     }
 
@@ -34,22 +38,24 @@ public class CommandReader extends BasicAbstractReader {
         return this.pass;
     }
 
-    private void readPass(){
+    private void readPass() {
+
         long passId = readLong();
         String description = readString();
 
         pass = new Pass(passId, description);
         long nbTicket = readLong();
 
-        for(int i = 0; i < nbTicket; i++){
+        for (int i = 0; i < nbTicket; i++) {
             pass.addTicket(readTicket());
         }
     }
 
     private Ticket readTicket() {
+
         Ticket.Type type = Ticket.Type.values()[readInt()];
 
-        switch (type){
+        switch (type) {
             case ROUTE:
                 return readRoute();
             case URBAN:
@@ -61,7 +67,8 @@ public class CommandReader extends BasicAbstractReader {
         throw new IllegalStateException();
     }
 
-    private Ticket readRoute(){
+    private Ticket readRoute() {
+
         String id = readString();
         String from = readString();
         String to = readString();
@@ -71,7 +78,8 @@ public class CommandReader extends BasicAbstractReader {
         return new Ticket(id, from, to, count, used);
     }
 
-    private Ticket readUrban(){
+    private Ticket readUrban() {
+
         String id = readString();
         int count = readInt();
         int used = readInt();
@@ -79,7 +87,8 @@ public class CommandReader extends BasicAbstractReader {
         return new Ticket(id, count, used);
     }
 
-    private Ticket readSubscription(){
+    private Ticket readSubscription() {
+
         String id = readString();
         Ticket.Month month = Ticket.Month.values()[readInt()];
         int used = readInt();

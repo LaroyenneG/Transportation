@@ -44,14 +44,15 @@ public class TerminalSession extends Thread {
 
         boolean r = listener.terminalUseTicket(reader.getIdPass(), reader.getTicketId(), reader.getCount());
 
-        if(r) {
+        if (r) {
             writer.writeOK();
-        }else {
+        } else {
             writer.writeKO();
         }
     }
 
     public boolean operate() {
+
         try {
             TerminalWriter writer = new TerminalWriter(connection.getOutputStream());
             TerminalReader reader = new TerminalReader(connection.getInputStream());
