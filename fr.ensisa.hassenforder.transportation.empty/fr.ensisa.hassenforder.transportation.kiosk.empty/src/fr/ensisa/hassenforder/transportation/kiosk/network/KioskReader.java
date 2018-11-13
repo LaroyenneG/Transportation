@@ -15,6 +15,7 @@ public class KioskReader extends BasicAbstractReader {
 
     public KioskReader(InputStream inputStream) {
         super(inputStream);
+        passId = -1;
     }
 
     public void receive() {

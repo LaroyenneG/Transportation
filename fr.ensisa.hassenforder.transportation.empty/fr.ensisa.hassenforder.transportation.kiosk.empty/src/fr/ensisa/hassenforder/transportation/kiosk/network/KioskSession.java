@@ -68,6 +68,8 @@ public class KioskSession implements ISession {
 
             if (reader.getType() == Protocol.REPLY_PASS) {
                 return reader.getPass();
+            }else if(reader.getType() == Protocol.REPLY_KO){
+                return null;
             }
 
             throw new IllegalStateException();
