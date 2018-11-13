@@ -163,12 +163,8 @@ public class KioskSession implements ISession {
             KioskReader reader = new KioskReader(connection.getInputStream());
             reader.receive();
 
-            if (reader.getType() == Protocol.REPLY_OK) {
-                return 0;
-            }
-
-            if (reader.getType() == Protocol.REPLY_KO) {
-                return -1;
+            if (reader.getType() == Protocol.REPLY_BUY) {
+                return reader.getPassId();
             }
 
             throw new IllegalStateException();

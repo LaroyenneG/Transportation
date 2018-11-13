@@ -96,4 +96,9 @@ public class KioskWriter extends BasicAbstractWriter {
     public void writeKO() {
         writeInt(Protocol.REPLY_KO);
     }
+
+    public void writePassId(long passId) {
+        writeInt(Protocol.REPLY_BUY);
+        writeLong(passId);
+    }
 }

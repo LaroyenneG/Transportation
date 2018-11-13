@@ -82,11 +82,7 @@ public class KioskSession extends Thread {
 
         long passId = listener.kioskPayTransaction(reader.getTransactionId(), reader.getCardId());
 
-        if (passId < 0) {
-            writer.writeKO();
-        } else {
-            writer.writeOK();
-        }
+        writer.writePassId(passId);
     }
 
     private void processRequestNewPass(KioskReader reader, KioskWriter writer) {
