@@ -30,7 +30,7 @@ public class CommandSession implements ISession {
     synchronized public boolean open() {
         this.close();
         try {
-            connection = new Socket("192.168.43.60", Protocol.TERMINAL_PORT);
+            connection = new Socket("localhost", Protocol.TERMINAL_PORT);
             return true;
         } catch (IOException e) {
             return false;

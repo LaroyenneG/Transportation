@@ -10,7 +10,6 @@ public class BankSession implements ISession {
     private Socket connection;
 
     public BankSession() {
-        open(); // !!!!!
     }
 
     @Override
@@ -38,7 +37,10 @@ public class BankSession implements ISession {
 
     @Override
     synchronized public boolean bankWithdraw(long cardId, int amount) {
+
         try {
+
+            open();
 
             BankWriter writer = new BankWriter(connection.getOutputStream());
             BankReader reader = new BankReader(connection.getInputStream());
@@ -48,9 +50,14 @@ public class BankSession implements ISession {
 
             reader.receive();
 
+            close();
+
             return reader.getType() == Protocol.REPLY_OK;
 
         } catch (IOException e) {
+
+            close();
+
             return false;
         }
     }
