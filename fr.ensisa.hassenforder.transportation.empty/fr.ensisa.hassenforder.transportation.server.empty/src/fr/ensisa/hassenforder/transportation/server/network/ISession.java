@@ -1,13 +1,15 @@
 package fr.ensisa.hassenforder.transportation.server.network;
 
 /**
+ *
  * @author hassenforder
  */
 public interface ISession {
 
-    boolean open();
+    boolean open ();
 
-    boolean close();
+    boolean close ();
 
-    boolean bankWithdraw(long cardId, int amount);
+	boolean bankWithdraw(long cardId, int amount);
+    
 }

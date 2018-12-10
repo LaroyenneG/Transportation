@@ -60,7 +60,6 @@ public class Kiosk implements GUIListener {
             @Override
             public void run () {
             	long passId = session.createPass ();
-            	System.out.println(passId);
             	if (passId == -1L) {
                     SwingUtilities.invokeLater(new Runnable() {
                         @Override
