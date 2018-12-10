@@ -66,9 +66,7 @@ public class TerminalWriter extends BasicAbstractWriter {
         writeInt(route.getUsed());
     }
 
-    public void writeKO() {
-        writeInt(Protocol.REPLY_OK);
-    }
+    public void writeKO() { writeInt(Protocol.REPLY_KO); }
 
     public void writeOK() {
         writeInt(Protocol.REPLY_OK);

@@ -54,6 +54,11 @@ public class CommandSession implements ISession {
                 return reader.getPass();
             }
 
+            if (reader.getType() == Protocol.REPLY_KO) {
+                this.passId = 0;
+                return null;
+            }
+
             throw new IllegalStateException();
 
         } catch (IOException e) {
