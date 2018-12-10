@@ -14,9 +14,7 @@ public class TerminalWriter extends BasicAbstractWriter {
     }
 
     public void writePass(Pass pass) {
-
         writeInt(Protocol.REPLY_PASS);
-
         writeLong(pass.getPassId());
         writeString(pass.getDescription());
 
@@ -46,39 +44,25 @@ public class TerminalWriter extends BasicAbstractWriter {
     }
 
     private void writeSubscription(Subscription subscription) {
-
         writeInt(Ticket.Type.SUBSCRIPTION.ordinal());
-
         writeString(subscription.getTicketId());
-
         writeInt(subscription.getMonth().ordinal());
-
         writeInt(subscription.getUsed());
     }
 
     private void writeUrbanTicket(Urban urban) {
-
         writeInt(Ticket.Type.URBAN.ordinal());
-
         writeString(urban.getTicketId());
-
         writeInt(urban.getCount());
-
         writeInt(urban.getUsed());
     }
 
     private void writeRouteTicket(Route route) {
-
         writeInt(Ticket.Type.ROUTE.ordinal());
-
         writeString(route.getTicketId());
-
         writeString(route.getFrom());
-
         writeString(route.getTo());
-
         writeInt(route.getCount());
-
         writeInt(route.getUsed());
     }
 

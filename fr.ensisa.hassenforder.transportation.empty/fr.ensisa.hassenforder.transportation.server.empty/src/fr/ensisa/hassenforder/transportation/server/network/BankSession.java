@@ -19,9 +19,10 @@ public class BankSession implements ISession {
                 connection.close();
             }
             connection = null;
+            return true;
         } catch (IOException e) {
+            return false;
         }
-        return true;
     }
 
     @Override
@@ -40,7 +41,7 @@ public class BankSession implements ISession {
 
         try {
 
-            open();
+            open(); // open is not called outside this class
 
             BankWriter writer = new BankWriter(connection.getOutputStream());
             BankReader reader = new BankReader(connection.getInputStream());
@@ -50,7 +51,7 @@ public class BankSession implements ISession {
 
             reader.receive();
 
-            close();
+            close(); // I opened the flow so to me to close it
 
             return reader.getType() == Protocol.REPLY_OK;
 
@@ -67,5 +68,4 @@ public class BankSession implements ISession {
         close();
         super.finalize();
     }
-
 }

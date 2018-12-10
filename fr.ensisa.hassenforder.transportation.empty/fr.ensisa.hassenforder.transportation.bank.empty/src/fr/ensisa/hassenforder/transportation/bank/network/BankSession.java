@@ -28,9 +28,9 @@ public class BankSession extends Thread {
 
     private void processRequestWithdraw(BankReader reader, BankWriter writer) {
 
-        boolean r = listener.withdrawByCardId(reader.getCardId(), reader.getAmount());
+        boolean result = listener.withdrawByCardId(reader.getCardId(), reader.getAmount());
 
-        if (r) {
+        if (result) {
             writer.writeOK();
         } else {
             writer.writeKO();
@@ -38,7 +38,9 @@ public class BankSession extends Thread {
     }
 
     public boolean operate() {
+
         try {
+
             BankWriter writer = new BankWriter(connection.getOutputStream());
             BankReader reader = new BankReader(connection.getInputStream());
 
@@ -53,8 +55,11 @@ public class BankSession extends Thread {
                     processRequestWithdraw(reader, writer);
                     break;
             }
+
             writer.send();
+
             return true;
+
         } catch (IOException e) {
             return false;
         }

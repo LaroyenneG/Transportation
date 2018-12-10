@@ -64,9 +64,9 @@ public class KioskSession extends Thread {
 
     private void processRequestCancel(KioskReader reader, KioskWriter writer) {
 
-        boolean r = listener.kioskCancelTransaction(reader.getTransactionId());
+        boolean result = listener.kioskCancelTransaction(reader.getTransactionId());
 
-        if (r) {
+        if (result) {
             writer.writeOK();
         } else {
             writer.writeKO();
@@ -105,9 +105,11 @@ public class KioskSession extends Thread {
     public boolean operate() {
 
         try {
+
             KioskWriter writer = new KioskWriter(connection.getOutputStream());
             KioskReader reader = new KioskReader(connection.getInputStream());
             reader.receive();
+
             switch (reader.getType()) {
                 case 0:
                     return false; // socket closed
@@ -140,8 +142,11 @@ public class KioskSession extends Thread {
                     processRequestPay(reader, writer);
                     break;
             }
+
             writer.send();
+
             return true;
+
         } catch (IOException e) {
             return false;
         }
@@ -158,5 +163,4 @@ public class KioskSession extends Thread {
         } catch (IOException e) {
         }
     }
-
 }

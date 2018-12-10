@@ -42,9 +42,9 @@ public class TerminalSession extends Thread {
 
     private void processRequestUse(TerminalReader reader, TerminalWriter writer) {
 
-        boolean r = listener.terminalUseTicket(reader.getIdPass(), reader.getTicketId(), reader.getCount());
+        boolean result = listener.terminalUseTicket(reader.getIdPass(), reader.getTicketId(), reader.getCount());
 
-        if (r) {
+        if (result) {
             writer.writeOK();
         } else {
             writer.writeKO();
@@ -54,9 +54,11 @@ public class TerminalSession extends Thread {
     public boolean operate() {
 
         try {
+
             TerminalWriter writer = new TerminalWriter(connection.getOutputStream());
             TerminalReader reader = new TerminalReader(connection.getInputStream());
             reader.receive();
+
             switch (reader.getType()) {
 
                 case 0:

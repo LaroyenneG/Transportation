@@ -49,5 +49,4 @@ public class KioskWriter extends BasicAbstractWriter {
         writeInt(Protocol.REQ_CANCEL);
         writeLong(id);
     }
-
 }

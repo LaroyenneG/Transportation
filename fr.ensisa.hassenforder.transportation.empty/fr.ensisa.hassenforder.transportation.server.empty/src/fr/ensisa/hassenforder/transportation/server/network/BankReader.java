@@ -12,19 +12,21 @@ public class BankReader extends BasicAbstractReader {
     }
 
     public void receive() {
+
         type = readInt();
         switch (type) {
 
             case Protocol.REPLY_OK:
+                // nothing to read
                 break;
 
             case Protocol.REPLY_KO:
+                // nothing to read
                 break;
 
             default:
-                type = 0;
+                type = 0; // un know, error case
                 break;
         }
     }
-
 }

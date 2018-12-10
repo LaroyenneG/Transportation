@@ -39,7 +39,9 @@ public class CommandSession implements ISession {
 
     @Override
     synchronized public Pass getPassById(long passId) {
+
         try {
+
             CommandWriter writer = new CommandWriter(connection.getOutputStream());
             writer.createFetch(passId);
             writer.send();
@@ -53,6 +55,7 @@ public class CommandSession implements ISession {
             }
 
             throw new IllegalStateException();
+
         } catch (IOException e) {
             this.passId = 0;
             return null;
@@ -61,7 +64,9 @@ public class CommandSession implements ISession {
 
     @Override
     synchronized public boolean useTicket(String ticketId, int count) {
+
         try {
+
             CommandWriter writer = new CommandWriter(connection.getOutputStream());
             writer.createUseTicket(this.passId, ticketId, count);
             writer.send();
@@ -70,9 +75,9 @@ public class CommandSession implements ISession {
             reader.receive();
 
             return reader.getType() == Protocol.REPLY_OK;
+
         } catch (IOException e) {
             return false;
         }
     }
-
 }

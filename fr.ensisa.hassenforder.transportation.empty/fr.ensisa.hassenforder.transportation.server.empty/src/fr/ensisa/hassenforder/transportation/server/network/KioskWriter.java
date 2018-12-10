@@ -16,7 +16,6 @@ public class KioskWriter extends BasicAbstractWriter {
     public void writePass(Pass pass) {
 
         writeInt(Protocol.REPLY_PASS);
-
         writeLong(pass.getPassId());
         writeString(pass.getDescription());
 
@@ -45,55 +44,36 @@ public class KioskWriter extends BasicAbstractWriter {
     }
 
     private void writeSubscription(Subscription subscription) {
-
         writeInt(Ticket.Type.SUBSCRIPTION.ordinal());
-
         writeString(subscription.getTicketId());
-
         writeInt(subscription.getMonth().ordinal());
-
         writeInt(subscription.getUsed());
     }
 
     private void writeUrbanTicket(Urban urban) {
-
         writeInt(Ticket.Type.URBAN.ordinal());
-
         writeString(urban.getTicketId());
-
         writeInt(urban.getCount());
-
         writeInt(urban.getUsed());
     }
 
     private void writeRouteTicket(Route route) {
-
         writeInt(Ticket.Type.ROUTE.ordinal());
-
         writeString(route.getTicketId());
-
         writeString(route.getFrom());
-
         writeString(route.getTo());
-
         writeInt(route.getCount());
-
         writeInt(route.getUsed());
     }
 
     public void writeTransaction(Transaction transaction) {
-
         writeInt(Protocol.REPLY_TRANSACTION);
-
         writeLong(transaction.getId());
-
         writeInt(transaction.getAmount());
     }
 
     public void writePassId(long passId) {
-
         writeInt(Protocol.REPLY_BUY);
-
         writeLong(passId);
     }
 

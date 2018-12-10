@@ -11,7 +11,6 @@ public class TerminalReader extends BasicAbstractReader {
     private long idPass;
     private int count;
 
-
     public TerminalReader(InputStream inputStream) {
         super(inputStream);
         idPass = -1;
@@ -22,7 +21,6 @@ public class TerminalReader extends BasicAbstractReader {
     public void receive() {
 
         type = readInt();
-
         switch (type) {
 
             case Protocol.REQ_FETCH:
@@ -34,7 +32,7 @@ public class TerminalReader extends BasicAbstractReader {
                 break;
 
             default:
-                type = 0;
+                type = 0; // un know, error case
                 break;
         }
     }

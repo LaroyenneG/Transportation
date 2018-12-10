@@ -38,7 +38,9 @@ public class KioskSession implements ISession {
 
     @Override
     public long createPass() {
+
         try {
+
             KioskWriter writer = new KioskWriter(connection.getOutputStream());
             writer.createNewPass();
             writer.send();
@@ -58,7 +60,9 @@ public class KioskSession implements ISession {
 
     @Override
     public Pass getPassById(long passId) {
+
         try {
+
             KioskWriter writer = new KioskWriter(connection.getOutputStream());
             writer.createFetch(passId);
             writer.send();
@@ -73,6 +77,7 @@ public class KioskSession implements ISession {
             }
 
             throw new IllegalStateException();
+
         } catch (IOException e) {
             return null;
         }
@@ -80,7 +85,9 @@ public class KioskSession implements ISession {
 
     @Override
     public Transaction buyRoute(long passId, String from, String to, int count) {
+
         try {
+
             KioskWriter writer = new KioskWriter(connection.getOutputStream());
             writer.createBuyRoute(passId, from, to, count);
             writer.send();
@@ -93,6 +100,7 @@ public class KioskSession implements ISession {
             }
 
             throw new IllegalStateException();
+
         } catch (IOException e) {
             return null;
         }
@@ -100,7 +108,9 @@ public class KioskSession implements ISession {
 
     @Override
     public Transaction buyUrban(long passId, int count) {
+
         try {
+
             KioskWriter writer = new KioskWriter(connection.getOutputStream());
             writer.createBuyUrban(passId, count);
             writer.send();
@@ -113,6 +123,7 @@ public class KioskSession implements ISession {
             }
 
             throw new IllegalStateException();
+
         } catch (IOException e) {
             return null;
         }
@@ -120,7 +131,9 @@ public class KioskSession implements ISession {
 
     @Override
     public Transaction buySubscription(long passId, int month) {
+
         try {
+
             KioskWriter writer = new KioskWriter(connection.getOutputStream());
             writer.createBuySubscription(passId, month);
             writer.send();
@@ -133,6 +146,7 @@ public class KioskSession implements ISession {
             }
 
             throw new IllegalStateException();
+
         } catch (IOException e) {
             return null;
         }
@@ -140,7 +154,9 @@ public class KioskSession implements ISession {
 
     @Override
     public boolean cancelTransaction(long id) {
+
         try {
+
             KioskWriter writer = new KioskWriter(connection.getOutputStream());
             writer.createCancel(id);
             writer.send();
@@ -157,7 +173,9 @@ public class KioskSession implements ISession {
 
     @Override
     public long payTransaction(long id, long cardId) {
+
         try {
+
             KioskWriter writer = new KioskWriter(connection.getOutputStream());
             writer.createPay(id, cardId);
             writer.send();
@@ -170,6 +188,7 @@ public class KioskSession implements ISession {
             }
 
             throw new IllegalStateException();
+
         } catch (IOException e) {
             return -1;
         }

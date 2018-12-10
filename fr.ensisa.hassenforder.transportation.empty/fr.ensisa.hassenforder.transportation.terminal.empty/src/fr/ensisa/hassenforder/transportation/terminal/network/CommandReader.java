@@ -23,13 +23,15 @@ public class CommandReader extends BasicAbstractReader {
                 break;
 
             case Protocol.REPLY_OK:
+                // nothing to read
                 break;
 
             case Protocol.REPLY_KO:
+                // nothing to read
                 break;
 
             default:
-                type = 0;
+                type = 0; // un know, error case
                 break;
         }
     }
@@ -41,9 +43,11 @@ public class CommandReader extends BasicAbstractReader {
     private void readPass() {
 
         long passId = readLong();
+
         String description = readString();
 
         pass = new Pass(passId, description);
+
         long nbTicket = readLong();
 
         for (int i = 0; i < nbTicket; i++) {
@@ -72,6 +76,7 @@ public class CommandReader extends BasicAbstractReader {
         String id = readString();
         String from = readString();
         String to = readString();
+
         int count = readInt();
         int used = readInt();
 
@@ -81,6 +86,7 @@ public class CommandReader extends BasicAbstractReader {
     private Ticket readUrban() {
 
         String id = readString();
+
         int count = readInt();
         int used = readInt();
 
@@ -90,7 +96,9 @@ public class CommandReader extends BasicAbstractReader {
     private Ticket readSubscription() {
 
         String id = readString();
+
         Ticket.Month month = Ticket.Month.values()[readInt()];
+
         int used = readInt();
 
         return new Ticket(id, month, used);

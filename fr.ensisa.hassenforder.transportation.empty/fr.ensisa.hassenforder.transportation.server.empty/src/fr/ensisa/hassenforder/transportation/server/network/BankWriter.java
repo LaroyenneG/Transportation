@@ -12,7 +12,6 @@ public class BankWriter extends BasicAbstractWriter {
     }
 
     public void createBuy(long cardId, int amount) {
-
         writeInt(Protocol.REQ_DEBIT);
         writeLong(cardId);
         writeInt(amount);

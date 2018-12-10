@@ -16,7 +16,9 @@ public class BankReader extends BasicAbstractReader {
     }
 
     public void receive() {
+
         type = readInt();
+
         switch (type) {
 
             case Protocol.REQ_DEBIT:

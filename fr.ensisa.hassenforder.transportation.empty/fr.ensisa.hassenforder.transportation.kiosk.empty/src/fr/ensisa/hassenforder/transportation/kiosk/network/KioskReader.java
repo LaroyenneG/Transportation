@@ -19,12 +19,16 @@ public class KioskReader extends BasicAbstractReader {
     }
 
     public void receive() {
+
         type = readInt();
         switch (type) {
+
             case Protocol.REPLY_OK:
+                // nothing to read
                 break;
 
             case Protocol.REPLY_KO:
+                // nothing to read
                 break;
 
             case Protocol.REPLY_PASS:
@@ -40,7 +44,7 @@ public class KioskReader extends BasicAbstractReader {
                 break;
 
             default:
-                type = 0;
+                type = 0; // un know  error case
                 break;
         }
     }
@@ -58,6 +62,7 @@ public class KioskReader extends BasicAbstractReader {
     }
 
     private void readPass() {
+
         long passId = readLong();
         String description = readString();
 
@@ -70,9 +75,11 @@ public class KioskReader extends BasicAbstractReader {
     }
 
     private Ticket readTicket() {
+
         Ticket.Type type = Ticket.Type.values()[readInt()];
 
         switch (type) {
+
             case ROUTE:
                 return readRoute();
             case URBAN:
@@ -85,9 +92,11 @@ public class KioskReader extends BasicAbstractReader {
     }
 
     private Ticket readRoute() {
+
         String id = readString();
         String from = readString();
         String to = readString();
+
         int count = readInt();
         int used = readInt();
 
@@ -95,7 +104,9 @@ public class KioskReader extends BasicAbstractReader {
     }
 
     private Ticket readUrban() {
+
         String id = readString();
+
         int count = readInt();
         int used = readInt();
 
@@ -103,6 +114,7 @@ public class KioskReader extends BasicAbstractReader {
     }
 
     private Ticket readSubscription() {
+
         String id = readString();
         Ticket.Month month = Ticket.Month.values()[readInt()];
         int used = readInt();
@@ -111,6 +123,7 @@ public class KioskReader extends BasicAbstractReader {
     }
 
     private void readTransaction() {
+
         long id = readLong();
         int amount = readInt();
 

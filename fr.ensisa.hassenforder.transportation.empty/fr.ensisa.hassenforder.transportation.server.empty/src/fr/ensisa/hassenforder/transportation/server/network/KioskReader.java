@@ -28,6 +28,7 @@ public class KioskReader extends BasicAbstractReader {
     }
 
     public void receive() {
+
         type = readInt();
         switch (type) {
 
@@ -36,7 +37,7 @@ public class KioskReader extends BasicAbstractReader {
                 break;
 
             case Protocol.REQ_NEW_PASS:
-                readNewPass();
+                // nothing to read
                 break;
 
             case Protocol.REQ_BUY_ROUTE:
@@ -60,13 +61,9 @@ public class KioskReader extends BasicAbstractReader {
                 break;
 
             default:
-                type = 0;
+                type = 0; // un know, error case
                 break;
         }
-    }
-
-    private void readNewPass() {
-        // rien a lire
     }
 
     private void readPay() {
