@@ -14,7 +14,6 @@ public class KioskWriter extends BasicAbstractWriter {
     }
 
     public void writePass(Pass pass) {
-
         writeInt(Protocol.REPLY_PASS);
         writeLong(pass.getPassId());
         writeString(pass.getDescription());
@@ -29,7 +28,6 @@ public class KioskWriter extends BasicAbstractWriter {
     }
 
     private void writeTicket(Ticket ticket) {
-
         if (ticket instanceof Route) {
             writeRouteTicket((Route) ticket);
         }
@@ -73,7 +71,7 @@ public class KioskWriter extends BasicAbstractWriter {
     }
 
     public void writePassId(long passId) {
-        writeInt(Protocol.REPLY_BUY);
+        writeInt(Protocol.REPLY_PASS_ID);
         writeLong(passId);
     }
 

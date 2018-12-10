@@ -32,34 +32,45 @@ public class KioskSession extends Thread {
 
         Ticket ticket = new Route(reader.getPassId(), reader.getFrom(), reader.getTo(), reader.getCount());
 
-        listener.kioskAddTicket(ticket);
+        if (listener.kioskAddTicket(ticket)) {
 
-        Transaction transaction = listener.kioskCreateTransaction(ticket);
+            Transaction transaction = listener.kioskCreateTransaction(ticket);
 
-        writer.writeTransaction(transaction);
+            writer.writeTransaction(transaction);
+
+        } else {
+            writer.writeKO();
+        }
     }
 
     private void processRequestBuyUrban(KioskReader reader, KioskWriter writer) {
 
-
         Ticket ticket = new Urban(reader.getPassId(), reader.getCount());
 
-        listener.kioskAddTicket(ticket);
+        if (listener.kioskAddTicket(ticket)) {
 
-        Transaction transaction = listener.kioskCreateTransaction(ticket);
+            Transaction transaction = listener.kioskCreateTransaction(ticket);
 
-        writer.writeTransaction(transaction);
+            writer.writeTransaction(transaction);
+
+        } else {
+            writer.writeKO();
+        }
     }
 
     private void processRequestBuySubscription(KioskReader reader, KioskWriter writer) {
 
         Ticket ticket = new Subscription(reader.getPassId(), reader.getMonth());
 
-        listener.kioskAddTicket(ticket);
+        if (listener.kioskAddTicket(ticket)) {
 
-        Transaction transaction = listener.kioskCreateTransaction(ticket);
+            Transaction transaction = listener.kioskCreateTransaction(ticket);
 
-        writer.writeTransaction(transaction);
+            writer.writeTransaction(transaction);
+
+        } else {
+            writer.writeKO();
+        }
     }
 
     private void processRequestCancel(KioskReader reader, KioskWriter writer) {
@@ -93,13 +104,9 @@ public class KioskSession extends Thread {
 
     private void processRequestNewPass(KioskReader reader, KioskWriter writer) {
 
-        Pass pass = listener.kioskFetchPass(listener.kioskCreatePass());
+        long passId = listener.kioskCreatePass();
 
-        if (pass == null) {
-            writer.writeKO();
-        } else {
-            writer.writePass(pass);
-        }
+        writer.writePassId(passId);
     }
 
     public boolean operate() {

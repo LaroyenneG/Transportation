@@ -39,7 +39,7 @@ public class KioskReader extends BasicAbstractReader {
                 readTransaction();
                 break;
 
-            case Protocol.REPLY_BUY:
+            case Protocol.REPLY_PASS_ID:
                 readBuy();
                 break;
 
